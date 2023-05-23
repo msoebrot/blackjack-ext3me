@@ -14,9 +14,8 @@ deckid = 0;
 //Function to start a game
 app.get("/start/:username", (req, res) => {
     let username = req.params['username'];
-    onsole.log('start');
+    console.log('start');
     console.log(username);
-
 });
 
 //Function to hit
