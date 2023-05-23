@@ -7,5 +7,8 @@ body {
   zoom:.90; 
 }
 
-
+.text{
+    font-family:'Berlin Sans FB Demi', sans-serif;
+    font-size: 50 px;
+}
 
