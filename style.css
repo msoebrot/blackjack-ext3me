@@ -1,3 +1,7 @@
 html {
-    background-image: url(PNGs/background.jpg);
+    background-image: url(PNGs/background.jpg); /* background found here: https://www.vecteezy.com/vector-art/15008011-ocean-or-sea-underwater-background-empty-bottom */
+    height: 100%
+}
+body{
+    min-height:10% ;
 }
