@@ -15,7 +15,7 @@ let dealer_total = -1;
 let player_total = -1;
 let dealer_cards = [];
 let player_cards = [];
-let data = [];
+let data = new Object();
 
 //Function to start a game
 app.get("/start/:username", (req, res) => {
@@ -24,6 +24,8 @@ app.get("/start/:username", (req, res) => {
     console.log(username);
     dealer_total = 0;
     player_total = 0;
+    dealer_cards = [];
+    player_cards = [];
     
     if(remaining_cards < 60) {
         //create a deck
@@ -57,8 +59,8 @@ app.get("/start/:username", (req, res) => {
                 startbody = JSON.parse(body);
                 deckid = startbody.deck_id;
                 remaining_cards = startbody.remaining;
-                data.push({'id': deckid});
-                data.push({'remaining': remaining_cards})
+                data.id = deckid;
+                data.remaining = remaining_cards;
 
                 let cards = [];
                 for(let i = 0; i < 4; i++) {
@@ -76,12 +78,14 @@ app.get("/start/:username", (req, res) => {
                 console.log(dealer_cards);
                 console.log(player_cards);
                 console.log(data)
+                data.dealer_cards = dealer_cards;
+                data.player_cards = player_cards;
                 res.send(data);
             });
         });
     }
     else {
-        let starturl = `https://deckofcardsapi.com/api/deck/${deckid}/draw/?count=2`;
+        let starturl = `https://deckofcardsapi.com/api/deck/${deckid}/draw/?count=4`;
         //console.log(starturl)
         request(starturl, (error, response, body)=>{
             if(error) console.log(error)
@@ -89,11 +93,33 @@ app.get("/start/:username", (req, res) => {
 		    // Printing status code
 		    //console.log(response.statusCode);
 
-            //console.log(body);
+            console.log(body);
 
-            body = JSON.parse(body);
-            deckid = body.deck_id;
-            remaining_cards = body.remaining;
+            startbody = JSON.parse(body);
+            deckid = startbody.deck_id;
+            remaining_cards = startbody.remaining;
+            data.id = deckid;
+            data.remaining = remaining_cards;
+
+            let cards = [];
+            for(let i = 0; i < 4; i++) {
+                let card = startbody.cards[i];
+                let value = card.value;
+                let image = card.image;
+                cards.push({"value": value, "image": image});
+            }
+            player_cards.push(cards[0]);
+            dealer_cards.push(cards[1]);
+            player_cards.push(cards[2]);
+            dealer_cards.push(cards[3]);
+
+            console.log(cards);
+            console.log(dealer_cards);
+            console.log(player_cards);
+            console.log(data)
+            data.dealer_cards = dealer_cards;
+            data.player_cards = player_cards;
+            res.send(data);
             //console.log(deckid);
             //console.log(remaining_cards);
         });
@@ -107,7 +133,7 @@ app.get("/hit/:username", (req, res) => {
     console.log('hit');
     console.log(username);
     //draw a card
-    let hiturl = `https://deckofcardsapi.com/api/deck/${deckid}/draw/?count=2`;
+    let hiturl = `https://deckofcardsapi.com/api/deck/${deckid}/draw/?count=1`;
     console.log(hiturl)
     request(hiturl, (error, response, body)=>{
         if(error) console.log(error)
@@ -117,11 +143,21 @@ app.get("/hit/:username", (req, res) => {
 
         console.log(body);
 
-        body = JSON.parse(body);
-        deckid = body.deck_id;
-        remaining_cards = body.remaining;
+        let hitbody = JSON.parse(body);
+        deckid = hitbody.deck_id;
+        remaining_cards = hitbody.remaining;
+        data.id = deckid;
+        data.remaining = remaining_cards;
         console.log(deckid);
         console.log(remaining_cards);
+
+        let card = hitbody.cards[0];
+        let value = card.value;
+        let image = card.image;
+        player_cards.push({"value": value, "image": image});
+        data.dealer_cards = dealer_cards;
+        data.player_cards = player_cards;
+        res.send(data);
     });
 
 });
