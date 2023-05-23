@@ -12,3 +12,12 @@ body {
     font-size: 50 px;
 }
 
+h1{
+    color:#ff002a;
+}
+
+.rectangle{
+    height:100px;
+    width: 100px;
+    color: #fcb4f2;
+}
