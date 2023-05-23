@@ -13,6 +13,9 @@ let deckid = '';
 let remaining_cards = -1;
 let dealer_total = -1;
 let player_total = -1;
+let dealer_cards = [];
+let player_cards = [];
+let data = [];
 
 //Function to start a game
 app.get("/start/:username", (req, res) => {
@@ -32,52 +35,70 @@ app.get("/start/:username", (req, res) => {
 		    // Printing status code
 		    console.log(response.statusCode);
 
-            console.log(body);
+            //console.log(body);
 
-            body = JSON.parse(body);
-            deckid = body.deck_id;
-            remaining_cards = body.remaining;
+            deckbody = JSON.parse(body);
+            deckid = deckbody.deck_id;
+            remaining_cards = deckbody.remaining;
 
-            console.log(deckid);
-            console.log(remaining_cards);
+            //console.log(deckid);
+            //console.log(remaining_cards);
 
-            let starturl = `https://deckofcardsapi.com/api/deck/${deckid}/draw/?count=2`;
-            console.log(starturl)
+            let starturl = `https://deckofcardsapi.com/api/deck/${deckid}/draw/?count=4`;
+            //console.log(starturl)
             request(starturl, (error, response, body)=>{
                 if(error) console.log(error)
 	   
 		        // Printing status code
-		        console.log(response.statusCode);
+		        //console.log(response.statusCode);
 
-                console.log(body);
+                //console.log(body);
 
-                body = JSON.parse(body);
-                deckid = body.deck_id;
-                remaining_cards = body.remaining;
-                console.log(deckid);
-                console.log(remaining_cards);
+                startbody = JSON.parse(body);
+                deckid = startbody.deck_id;
+                remaining_cards = startbody.remaining;
+                data.push({'id': deckid});
+                data.push({'remaining': remaining_cards})
+
+                let cards = [];
+                for(let i = 0; i < 4; i++) {
+                    let card = startbody.cards[i];
+                    let value = card.value;
+                    let image = card.image;
+                    cards.push({"value": value, "image": image});
+                }
+                player_cards.push(cards[0]);
+                dealer_cards.push(cards[1]);
+                player_cards.push(cards[2]);
+                dealer_cards.push(cards[3]);
+
+                console.log(cards);
+                console.log(dealer_cards);
+                console.log(player_cards);
+                console.log(data)
+                res.send(data);
             });
         });
     }
     else {
         let starturl = `https://deckofcardsapi.com/api/deck/${deckid}/draw/?count=2`;
-        console.log(starturl)
+        //console.log(starturl)
         request(starturl, (error, response, body)=>{
             if(error) console.log(error)
 	   
 		    // Printing status code
-		    console.log(response.statusCode);
+		    //console.log(response.statusCode);
 
-            console.log(body);
+            //console.log(body);
 
             body = JSON.parse(body);
             deckid = body.deck_id;
             remaining_cards = body.remaining;
-            console.log(deckid);
-            console.log(remaining_cards);
+            //console.log(deckid);
+            //console.log(remaining_cards);
         });
     }
-    res.send('hello');
+    
 });
 
 //Function to hit

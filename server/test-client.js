@@ -5,6 +5,10 @@ let username = "bill";
 let xhr = new XMLHttpRequest(); //Defines xmlhttp objject
 xhr.open("GET", `http://localhost:3000/start/${username}`); // request to the website
 xhr.send(); //sends the request
+console.log('output');
+xhr.onload = function(){
+    console.log(JSON.parse(xhr.responseText));
+}
 
 /*
 let xhr2 = new XMLHttpRequest(); //Defines xmlhttp objject
