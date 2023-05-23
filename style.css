@@ -6,12 +6,16 @@ body {
   background-position:center;
   zoom:.90; 
 }
-
 .text{
     font-family:'Berlin Sans FB Demi', sans-serif;
-    font-size: 50 px;
+    font-size:30px;
 }
-.icons{
+.box{
+    height:250px;
+    width:250px;
+    color:#fcb4f2; 
+}
+#icons{
     height:20em ;
     width: 20em;
 }
