@@ -8,12 +8,13 @@ body {
 }
 .text{
     font-family:'Berlin Sans FB Demi', sans-serif;
-    font-size:30px;
+    font-size:50px;
 }
 .box{
     height:250px;
     width:250px;
     color:#fcb4f2; 
+    border:15px solid;
 }
 #icons{
     height:20em ;
