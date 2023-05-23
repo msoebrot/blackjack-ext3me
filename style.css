@@ -11,7 +11,10 @@ body {
     font-family:'Berlin Sans FB Demi', sans-serif;
     font-size: 50 px;
 }
-
+.icons{
+    height:20em ;
+    width: 20em;
+}
 h1{
     color:#ff002a;
 }
