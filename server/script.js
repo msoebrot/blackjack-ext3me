@@ -15,7 +15,28 @@ let dealer_total = -1;
 let player_total = -1;
 let dealer_cards = [];
 let player_cards = [];
+let cards = [];
 let data = new Object();
+let face = ['KING', 'QUEEN', 'JACK'];
+
+function add_value(cardlist, cardvalue) {
+    if(face.includes(cardvalue)) {
+        return cardlist + 10;
+    }
+    else if (cardvalue == 'ACE') {
+        if(cardlist <= 10) {
+            return cardlist + 11;
+        }
+        return cardlist + 1;
+    }
+    return cardlist + Number(cardvalue);
+}
+
+function empty_list(list) {
+    while(list.length > 0) {
+        list.pop();
+    }
+}
 
 //Function to start a game
 app.get("/start/:username", (req, res) => {
@@ -24,8 +45,9 @@ app.get("/start/:username", (req, res) => {
     console.log(username);
     dealer_total = 0;
     player_total = 0;
-    dealer_cards = [];
-    player_cards = [];
+    empty_list(dealer_cards);
+    empty_list(player_cards);
+    empty_list(cards);
     
     if(remaining_cards < 60) {
         //create a deck
@@ -62,7 +84,6 @@ app.get("/start/:username", (req, res) => {
                 data.id = deckid;
                 data.remaining = remaining_cards;
 
-                let cards = [];
                 for(let i = 0; i < 4; i++) {
                     let card = startbody.cards[i];
                     let value = card.value;
@@ -70,17 +91,28 @@ app.get("/start/:username", (req, res) => {
                     cards.push({"value": value, "image": image});
                 }
                 player_cards.push(cards[0]);
-                dealer_cards.push(cards[1]);
-                player_cards.push(cards[2]);
-                dealer_cards.push(cards[3]);
+                player_total = add_value(player_total, cards[0].value);
 
-                console.log(cards);
+                dealer_cards.push(cards[1]);
+                dealer_total = add_value(dealer_total, cards[1].value);
+
+                player_cards.push(cards[2]);
+                player_total = add_value(player_total, cards[2].value);
+
+                //console.log(cards);
                 console.log(dealer_cards);
                 console.log(player_cards);
-                console.log(data)
+                console.log(player_total);
+                console.log(dealer_total);
+
                 data.dealer_cards = dealer_cards;
                 data.player_cards = player_cards;
+                
                 res.send(data);
+                //console.log(data)
+
+                dealer_cards.push(cards[3]);
+                dealer_total = add_value(dealer_total, cards[3].value);
             });
         });
     }
@@ -93,7 +125,7 @@ app.get("/start/:username", (req, res) => {
 		    // Printing status code
 		    //console.log(response.statusCode);
 
-            console.log(body);
+            //console.log(body);
 
             startbody = JSON.parse(body);
             deckid = startbody.deck_id;
@@ -101,7 +133,6 @@ app.get("/start/:username", (req, res) => {
             data.id = deckid;
             data.remaining = remaining_cards;
 
-            let cards = [];
             for(let i = 0; i < 4; i++) {
                 let card = startbody.cards[i];
                 let value = card.value;
@@ -109,19 +140,27 @@ app.get("/start/:username", (req, res) => {
                 cards.push({"value": value, "image": image});
             }
             player_cards.push(cards[0]);
-            dealer_cards.push(cards[1]);
-            player_cards.push(cards[2]);
-            dealer_cards.push(cards[3]);
+            player_total = add_value(player_total, cards[0].value);
 
-            console.log(cards);
-            console.log(dealer_cards);
-            console.log(player_cards);
-            console.log(data)
+            dealer_cards.push(cards[1]);
+            dealer_total = add_value(dealer_total, cards[1].value);
+
+            player_cards.push(cards[2]);
+            player_total = add_value(player_total, cards[2].value);
+
             data.dealer_cards = dealer_cards;
             data.player_cards = player_cards;
+
+            console.log(dealer_cards);
+            console.log(player_cards);
+            console.log(player_total);
+            console.log(dealer_total);
+
             res.send(data);
-            //console.log(deckid);
-            //console.log(remaining_cards);
+
+            dealer_cards.push(cards[3]);
+            dealer_total = add_value(dealer_total, cards[3].value);
+
         });
     }
     
@@ -134,14 +173,14 @@ app.get("/hit/:username", (req, res) => {
     console.log(username);
     //draw a card
     let hiturl = `https://deckofcardsapi.com/api/deck/${deckid}/draw/?count=1`;
-    console.log(hiturl)
+    //console.log(hiturl)
     request(hiturl, (error, response, body)=>{
         if(error) console.log(error)
 	   
 		// Printing status code
 		console.log(response.statusCode);
 
-        console.log(body);
+        //console.log(body);
 
         let hitbody = JSON.parse(body);
         deckid = hitbody.deck_id;
@@ -155,8 +194,13 @@ app.get("/hit/:username", (req, res) => {
         let value = card.value;
         let image = card.image;
         player_cards.push({"value": value, "image": image});
-        data.dealer_cards = dealer_cards;
+        player_total = add_value(player_total, value);
+        data.dealer_cards = [dealer_cards[0]];
         data.player_cards = player_cards;
+        console.log(dealer_cards);
+        console.log(player_cards);
+        console.log(player_total);
+        console.log(dealer_total);
         res.send(data);
     });
 
