@@ -6,6 +6,28 @@ body {
   background-position:center;
   zoom:.90; 
 }
+.text{
+    font-family:'Berlin Sans FB Demi', sans-serif;
+    font-size:50px;
+}
+.box{
+    height:500px;
+    width:5000px;
+    color:#fcb4f2; 
+    border:15px solid;
+    padding: 10px;
 
+}
+#icons{
+    height:20em ;
+    width: 20em;
+}
+h1{
+    color:#ff002a;
+}
 
-
+.rectangle{
+    height:100px;
+    width: 100px;
+    color: #fcb4f2;
+}
