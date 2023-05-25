@@ -18,16 +18,14 @@ let player_cards = [];
 let cards = [];
 let data = new Object();
 let face = ['KING', 'QUEEN', 'JACK'];
+let lost = false;
 
 function add_value(cardlist, cardvalue) {
     if(face.includes(cardvalue)) {
         return cardlist + 10;
     }
     else if (cardvalue == 'ACE') {
-        if(cardlist <= 10) {
-            return cardlist + 11;
-        }
-        return cardlist + 1;
+        return cardlist + 11;
     }
     return cardlist + Number(cardvalue);
 }
@@ -36,6 +34,15 @@ function empty_list(list) {
     while(list.length > 0) {
         list.pop();
     }
+}
+
+function has_ace(hand) {
+    for(let i = 0; i < hand.length; i++) {
+        if(hand[i].value == "ACE") {
+            return i;
+        }
+    }
+    return -1;
 }
 
 //Function to start a game
@@ -48,6 +55,7 @@ app.get("/start/:username", (req, res) => {
     empty_list(dealer_cards);
     empty_list(player_cards);
     empty_list(cards);
+    lost = false;
     
     if(remaining_cards < 60) {
         //create a deck
@@ -211,6 +219,37 @@ app.get("/stand/:username", (req, res) => {
     let username = req.params['username'];
     console.log('stand');
     console.log(username);
+    
+    let standurl = `https://deckofcardsapi.com/api/deck/${deckid}/draw/?count=1`;
+    while(dealer_total < player_total || dealer_total < 17) {
+        request(standurl, (error, response, body)=>{
+            if(error) console.log(error);
+
+            console.log(response.statusCode);
+
+            let standbody = JSON.parse(body);
+            deckid = standbody.deck_id;
+            remaining_cards = standbody.remaining;
+            data.id = deckid;
+            data.remaining = remaining_cards;
+            console.log(deckid);
+            console.log(remaining_cards);
+
+            let card = standbody.cards[0];
+            let value = card.value;
+            let image = card.image;
+            dealer_cards.push({"value": value, "image": image});
+            dealer_total = add_value(dealer_total, value);
+            data.dealer_cards = dealer_cards;
+            data.player_cards = player_cards;
+            
+        })
+    }
+    console.log(dealer_cards);
+    console.log(player_cards);
+    console.log(player_total);
+    console.log(dealer_total);
+    res.send(data);
 });
 
 //Function to update balance

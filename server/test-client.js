@@ -2,20 +2,27 @@
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 let username = "bill";
 
-let xhr = new XMLHttpRequest(); //Defines xmlhttp objject
-xhr.open("GET", `http://localhost:3000/start/${username}`); // request to the website
-xhr.send(); //sends the request
+let xhr_start = new XMLHttpRequest(); //Defines xmlhttp objject
+xhr_start.open("GET", `http://localhost:3000/start/${username}`); // request to the website
+xhr_start.send(); //sends the request
 console.log('output');
-xhr.onload = function() {
-    let startbody = JSON.parse(xhr.responseText);
+xhr_start.onload = function() {
+    let startbody = JSON.parse(xhr_start.responseText);
     console.log(startbody);
     /*
     console.log(startbody.id);
     console.log(startbody.remaining);
     console.log(startbody.dealer_cards);
     console.log(startbody.player_cards);
-    */
+    
+    let hit = true;
 
+    let hit_xhr = [];
+    while(hit == true)
+    {
+        hit_xhr[]
+    }
+    */
     let xhr2 = new XMLHttpRequest(); //Defines xmlhttp objject
     xhr2.open("GET", `http://localhost:3000/hit/${username}`); // request to the website
     xhr2.send(); //sends the request
