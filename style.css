@@ -11,10 +11,12 @@ body {
     font-size:50px;
 }
 .box{
-    height:150px;
-    width:250px;
+    height:500px;
+    width:5000px;
     color:#fcb4f2; 
     border:15px solid;
+    padding: 10px;
+
 }
 #icons{
     height:20em ;
