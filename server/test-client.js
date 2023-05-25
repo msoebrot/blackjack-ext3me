@@ -14,15 +14,44 @@ xhr_start.onload = function() {
     console.log(startbody.remaining);
     console.log(startbody.dealer_cards);
     console.log(startbody.player_cards);
+    */
     
-    let hit = true;
+    /*
+    let ready = true;
 
     let hit_xhr = [];
-    while(hit == true)
+    for(let i = 0; i < 3; i = i)
     {
-        hit_xhr[]
+        while(ready != true)
+        {
+            //buffering
+        }
+        if(ready == true) {
+            ready = false;
+            hit_xhr[i] = new XMLHttpRequest();
+            hit_xhr[i].open("GET", `http://localhost:3000/hit/${username}`);
+            hit_xhr[i].send();
+            hit_xhr[i].onload = function() {
+                let hitbody = JSON.parse(hit_xhr[i].responseText);
+                console.log(hitbody);
+                ready = true;
+            }
+
+            if(i == 1) {
+                stand_xhr = new XMLHttpRequest();
+                stand_xhr.open("GET", `http://localhost:3000/stand/${username}`);
+                stand_xhr.send();
+                stand_xhr.onload = function() {
+                    let standbody = JSON.parse(body);
+                    console.log(standbody)
+                    ready = true;
+                }
+                break;
+            }
+        } 
     }
     */
+
     let xhr2 = new XMLHttpRequest(); //Defines xmlhttp objject
     xhr2.open("GET", `http://localhost:3000/hit/${username}`); // request to the website
     xhr2.send(); //sends the request
