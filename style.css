@@ -4,19 +4,22 @@ body {
   background-attachment:fixed;
   background-size:cover;
   background-position:center;
-  zoom:.90; 
+  zoom:.60; 
 }
 .text{
     font-family:'Berlin Sans FB Demi', sans-serif;
-    font-size:50px;
+    font-size:70px;
 }
 .box{
-    height:500px;
-    width:5000px;
-    color:#fcb4f2; 
+    height:200px;
+    width:700px;
+    background-color:#fcb4f2; 
     border:15px solid;
-    padding: 10px;
-
+    padding: 25px;
+    position:relative;
+    top:100px;
+    right:500px;
+    left:700px; 
 }
 #icons{
     height:20em ;
@@ -24,10 +27,20 @@ body {
 }
 h1{
     color:#ff002a;
+    text-align:center ;
 }
 
-.rectangle{
-    height:100px;
-    width: 100px;
-    color: #fcb4f2;
+.shark{
+    position:absolute;
+    top: 10px;
+    right: 10px; 
 }
+
+.bonefish{
+    position: absolute;
+    top: 5px;
+    left: 10px;
+    transform: rotate(-20deg);
+}
+
+
