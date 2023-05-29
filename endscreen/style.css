@@ -1,0 +1,34 @@
+body {
+    background-image:url(PNGs/background.jpg); /* background found here: https://www.vecteezy.com/vector-art/15008011-ocean-or-sea-underwater-background-empty-bottom */
+   background-repeat:no-repeat;
+  background-attachment:fixed;
+  background-size:cover;
+  background-position:center;
+  zoom:.60; 
+}
+text{
+    font-family:'Berlin Sans FB Demi', sans-serif;
+    font-size:70px;
+}
+.box{
+    height:200px;
+    width:700px;
+    background-color:#fcb4f2; 
+    border:15px solid;
+    padding: 25px;
+    position:relative;
+    top:100px;
+    right:500px;
+    left:700px; 
+}
+.box1{
+    height:200px;
+    width:700px;
+    background-color:#fcb4f2; 
+    border:15px solid;
+    padding: 25px;
+    position:relative;
+    top:100px;
+    right:500px;
+    left:700px; 
+}
