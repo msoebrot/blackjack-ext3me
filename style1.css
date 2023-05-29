@@ -4,11 +4,13 @@ body {
   background-attachment:fixed;
   background-size:cover;
   background-position:center;
-  zoom:.60; 
+  zoom:.50; 
 }
-text{
+.text{
     font-family:'Berlin Sans FB Demi', sans-serif;
     font-size:70px;
+    color:#ff002a;
+    text-align:center ;
 }
 .box{
     height:200px;
@@ -18,8 +20,8 @@ text{
     padding: 25px;
     position:relative;
     top:100px;
-    right:500px;
-    left:700px; 
+    right:50px;
+    left: 900px; 
 }
 .box1{
     height:200px;
@@ -30,5 +32,9 @@ text{
     position:relative;
     top:100px;
     right:500px;
-    left:700px; 
+    left:900px; 
+}
+.bonefish{
+    position: relative;
+    left:1000px
 }
