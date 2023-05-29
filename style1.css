@@ -1,4 +1,4 @@
-body {
+html {
     background-image:url(PNGs/background.jpg); /* background found here: https://www.vecteezy.com/vector-art/15008011-ocean-or-sea-underwater-background-empty-bottom */
    background-repeat:no-repeat;
   background-attachment:fixed;
@@ -6,6 +6,12 @@ body {
   background-position:center;
   zoom:.50; 
 }
+body {
+    width: 50%;
+    max-width: 800px;
+    min-width: 480px;
+    margin: 0 auto;
+  }
 .text{
     font-family:'Berlin Sans FB Demi', sans-serif;
     font-size:70px;
