@@ -158,6 +158,7 @@ app.get("/start/:username", (req, res) => {
 
             data.dealer_cards = dealer_cards;
             data.player_cards = player_cards;
+            data.action = 'start';
 
             console.log(dealer_cards);
             console.log(player_cards);
@@ -205,6 +206,7 @@ app.get("/hit/:username", (req, res) => {
         player_total = add_value(player_total, value);
         data.dealer_cards = [dealer_cards[0]];
         data.player_cards = player_cards;
+        data.action = 'hit';
         console.log(dealer_cards);
         console.log(player_cards);
         console.log(player_total);
@@ -222,12 +224,16 @@ app.get("/stand/:username", (req, res) => {
     
     let standurl = `https://deckofcardsapi.com/api/deck/${deckid}/draw/?count=1`;
     while(dealer_total < player_total || dealer_total < 17) {
+        let standbody = new Object();
+        let card = new Object();
+        let value = 0;
+        let image = "";
         request(standurl, (error, response, body)=>{
             if(error) console.log(error);
 
             console.log(response.statusCode);
 
-            let standbody = JSON.parse(body);
+            standbody = JSON.parse(body);
             deckid = standbody.deck_id;
             remaining_cards = standbody.remaining;
             data.id = deckid;
@@ -235,13 +241,14 @@ app.get("/stand/:username", (req, res) => {
             console.log(deckid);
             console.log(remaining_cards);
 
-            let card = standbody.cards[0];
-            let value = card.value;
-            let image = card.image;
+            card = standbody.cards[0];
+            value = card.value;
+            image = card.image;
             dealer_cards.push({"value": value, "image": image});
             dealer_total = add_value(dealer_total, value);
             data.dealer_cards = dealer_cards;
             data.player_cards = player_cards;
+            data.action = 'stand';
             
         })
     }
