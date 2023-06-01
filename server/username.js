@@ -24,8 +24,9 @@ function validateUsername (username) {
 
 // adds password to username 
 function checkPassword() {
-    let password = document.getElementById("passwordBox");
-    let passwordText = password.value;
+    let password = document.getElementById("password");
+    let charchter = "0123456789abcdefghijklmnopqerstuvwxyz!@#$%^&*()ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    let passwordLength = 12; 
     if (passwordText == "bill420") {
         return true;
     }
