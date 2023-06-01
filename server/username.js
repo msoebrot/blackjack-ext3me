@@ -1,4 +1,8 @@
+// username dictionary
 let userDict = {'username1' : 500, 'username2' : 500, 'username#' : 500};
+
+// password dictionary tied to username
+let passwordDict = {'username1' : 'bill420', 'username 2' : 'emily21', 'username#' : 'blues clues'};
 
 // adds a valid (not used) username to dictionary 
 function valid_username ( username ) {
@@ -8,7 +12,7 @@ function valid_username ( username ) {
         return userDict.username; 
     }
     else {
-        userDict [username].push(500);
+        userDict [username].push(500); // gives user a starter balance 
     }
 }    
 
@@ -16,6 +20,17 @@ function valid_username ( username ) {
 function validateUsername (username) {
     let alphanumericRegex = /^[a-zA-Z0-9_]+$/;
         return alphanumericRegex.test(username) && username.length >= 2 && username.length <=10;  
+}
+
+// adds password to username 
+function checkPassword() {
+    let password = document.getElementById("passwordBox");
+    let passwordText = password.value;
+    if (passwordText == "bill420") {
+        return true;
+    }
+    alert ("Incorrect Password!");
+    return false;
 }
 
 // adds a "base" balance to user if username does NOT exist  
