@@ -158,7 +158,6 @@ app.get("/start/:username", (req, res) => {
 
             data.dealer_cards = dealer_cards;
             data.player_cards = player_cards;
-            data.action = 'start';
 
             console.log(dealer_cards);
             console.log(player_cards);
@@ -204,9 +203,9 @@ app.get("/hit/:username", (req, res) => {
         let image = card.image;
         player_cards.push({"value": value, "image": image});
         player_total = add_value(player_total, value);
+        if(player_total > 21 && has_ace(player_cards))
         data.dealer_cards = [dealer_cards[0]];
         data.player_cards = player_cards;
-        data.action = 'hit';
         console.log(dealer_cards);
         console.log(player_cards);
         console.log(player_total);
@@ -222,41 +221,49 @@ app.get("/stand/:username", (req, res) => {
     console.log('stand');
     console.log(username);
     
-    let standurl = `https://deckofcardsapi.com/api/deck/${deckid}/draw/?count=1`;
-    while(dealer_total < player_total || dealer_total < 17) {
-        let standbody = new Object();
-        let card = new Object();
-        let value = 0;
-        let image = "";
-        request(standurl, (error, response, body)=>{
-            if(error) console.log(error);
+    let standurl = `https://deckofcardsapi.com/api/deck/${deckid}/draw/?count=20`;
+    request(standurl, (error, response, body)=>{
+        if(error) console.log(error);
 
-            console.log(response.statusCode);
+        console.log(response.statusCode);
 
-            standbody = JSON.parse(body);
-            deckid = standbody.deck_id;
-            remaining_cards = standbody.remaining;
-            data.id = deckid;
-            data.remaining = remaining_cards;
-            console.log(deckid);
-            console.log(remaining_cards);
+        let standbody = JSON.parse(body);
+        deckid = standbody.deck_id;
+        remaining_cards = standbody.remaining;
+        data.id = deckid;
+        data.remaining = remaining_cards;
+        console.log(deckid);
+        console.log(remaining_cards);
+        console.log(dealer_total)
+        console.log(dealer_total < player_total)
+        console.log(dealer_total < 17)
+        let i = 0;
 
-            card = standbody.cards[0];
-            value = card.value;
-            image = card.image;
+        while(dealer_total < player_total && dealer_total < 17)
+        {
+            let card = standbody.cards[i];
+            let value = card.value;
+            let image = card.image;
+
             dealer_cards.push({"value": value, "image": image});
             dealer_total = add_value(dealer_total, value);
-            data.dealer_cards = dealer_cards;
-            data.player_cards = player_cards;
-            data.action = 'stand';
             
-        })
-    }
-    console.log(dealer_cards);
-    console.log(player_cards);
-    console.log(player_total);
-    console.log(dealer_total);
-    res.send(data);
+            console.log('dealer draw')
+            console.log(dealer_total)
+            console.log(dealer_total < player_total)
+            console.log(dealer_total < 17)
+            i++;
+        }
+        data.dealer_cards = dealer_cards;
+        data.player_cards = player_cards;
+        console.log(player_total);
+        console.log(dealer_total);
+        console.log(dealer_cards);
+        console.log(player_cards);
+        res.send(data);
+        
+    })
+    
 });
 
 //Function to update balance

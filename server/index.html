@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Blackjack Game</title>
+  <style>
+    button {
+      padding: 10px;
+      font-size: 16px;
+      margin: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Blackjack Game</h1>
+  
+  <button id="dealButton">Deal</button>
+  <button id="hitButton">Hit</button>
+  <button id="standButton">Stand</button>
+  <p> Dealer: <b id="dealer_total"> 0 </b></p>
+  <p> User: <b id="user_total"> 0 </b></p>
+  
+  <script>
+    let username = 'bill';
+    // Add event listeners to the buttons
+    document.getElementById("dealButton").addEventListener("click", deal);
+    document.getElementById("hitButton").addEventListener("click", hit);
+    document.getElementById("standButton").addEventListener("click", stand);
+
+    // Function to handle the "Deal" button click
+    function deal() {
+      // TODO: Implement the logic for dealing the cards
+      let xhr_start = new XMLHttpRequest(); //Defines xmlhttp objject
+      xhr_start.open("GET", `http://localhost:3000/start/${username}`); // request to the website
+      xhr_start.send(); //sends the request
+      xhr_start.onload = function() {
+        let startbody = JSON.parse(xhr_start.responseText);
+        console.log(startbody);
+      }
+      console.log("Deal button clicked");
+    }
+
+    // Function to handle the "Hit" button click
+    function hit() {
+      // TODO: Implement the logic for hitting (drawing) a card
+      let xhr_hit = new XMLHttpRequest(); //Defines xmlhttp objject
+      xhr_hit.open("GET", `http://localhost:3000/hit/${username}`); // request to the website
+      xhr_hit.send(); //sends the request
+      xhr_hit.onload = function() {
+        let hitbody = JSON.parse(xhr_hit.responseText);
+        console.log(hitbody);
+      }
+      console.log("Hit button clicked");
+    }
+
+    // Function to handle the "Stand" button click
+    function stand() {
+      // TODO: Implement the logic for standing (ending the player's turn)
+      let xhr_stand = new XMLHttpRequest(); //Defines xmlhttp objject
+      xhr_stand.open("GET", `http://localhost:3000/stand/${username}`); // request to the website
+      xhr_stand.send(); //sends the request
+      xhr_stand.onload = function() {
+        let standbody = JSON.parse(xhr_stand.responseText);
+        document.getElementById("dealer_total").innerHTML = 1;
+        document.getElementById("user_total").innerHTML = 2;
+        console.log(standbody.win)
+        console.log(standbody);
+      }
+      console.log("Stand button clicked");
+    }
+
+  </script>
+</body>
+</html>
