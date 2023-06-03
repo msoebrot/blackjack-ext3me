@@ -12,7 +12,7 @@ function valid_username ( username ) {
         return userDict.username; 
     }
     else {
-        userDict [username].push(500); // gives user a starter balance 
+        userDict[username].push(500); // gives user a starter balance 
     }
 }    
 

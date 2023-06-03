@@ -8,6 +8,11 @@
       font-size: 16px;
       margin: 5px;
     }
+
+    .dealer, .user{
+      height: 150px;
+      width: 150px;
+    }
   </style>
 </head>
 <body>
@@ -16,8 +21,24 @@
   <button id="dealButton">Deal</button>
   <button id="hitButton">Hit</button>
   <button id="standButton">Stand</button>
-  <p> Dealer: <b id="dealer_total"> 0 </b></p>
-  <p> User: <b id="user_total"> 0 </b></p>
+  <p> Dealer: <b id="dealer_total"> - </b></p>
+
+  <img class="dealer" src="back.png" alt="image">
+  <img class="dealer" src="back.png" alt="image">
+  <img class="dealer" src="back.png" alt="image">
+  <img class="dealer" src="back.png" alt="image">
+  <img class="dealer" src="back.png" alt="image">
+  <img class="dealer" src="back.png" alt="image">
+  <img class="dealer" src="back.png" alt="image">
+
+  <p> User: <b id="user_total"> - </b></p>
+  <img class="user" src="back.png" alt="image">
+  <img class="user" src="back.png" alt="image">
+  <img class="user" src="back.png" alt="image">
+  <img class="user" src="back.png" alt="image">
+  <img class="user" src="back.png" alt="image">
+  <img class="user" src="back.png" alt="image">
+  <img class="user" src="back.png" alt="image">
   
   <script>
     let username = 'bill';
@@ -35,6 +56,26 @@
       xhr_start.onload = function() {
         let startbody = JSON.parse(xhr_start.responseText);
         console.log(startbody);
+
+        document.getElementById("dealer_total").innerHTML = '-';
+        document.getElementById("user_total").innerHTML = '-';
+        
+        let dealer_cards = startbody.dealer_cards;
+        let dealerElements = document.getElementsByClassName("dealer");
+        for(let i = 0; i < dealer_cards.length; i++) {
+            dealerElements[i].src = dealer_cards[i].image;
+        }
+        for(let i = dealer_cards.length; i < dealerElements.length; i++) {
+            dealerElements[i].src = "back.png";
+        }
+        let user_cards = startbody.player_cards;
+        let userElements = document.getElementsByClassName("user");
+        for(let i = 0; i < user_cards.length; i++) {
+            userElements[i].src = user_cards[i].image;
+        }
+        for(let i = user_cards.length; i < userElements.length; i++) {
+            userElements[i].src = "back.png";
+        }
       }
       console.log("Deal button clicked");
     }
@@ -47,6 +88,21 @@
       xhr_hit.send(); //sends the request
       xhr_hit.onload = function() {
         let hitbody = JSON.parse(xhr_hit.responseText);
+        console.log(hitbody.win)
+        let dealer_cards = hitbody.dealer_cards;
+        let dealerElements = document.getElementsByClassName("dealer");
+        for(let i = 0; i < dealer_cards.length; i++) {
+            dealerElements[i].src = dealer_cards[i].image;
+        }
+        let user_cards = hitbody.player_cards;
+        let userElements = document.getElementsByClassName("user");
+        for(let i = 0; i < user_cards.length; i++) {
+            userElements[i].src = user_cards[i].image;
+        }
+        if(hitbody.win == 0) {
+          document.getElementById("dealer_total").innerHTML = 'win';
+          document.getElementById("user_total").innerHTML = 'lose';
+        }
         console.log(hitbody);
       }
       console.log("Hit button clicked");
@@ -60,8 +116,28 @@
       xhr_stand.send(); //sends the request
       xhr_stand.onload = function() {
         let standbody = JSON.parse(xhr_stand.responseText);
-        document.getElementById("dealer_total").innerHTML = 1;
-        document.getElementById("user_total").innerHTML = 2;
+        let dealer_cards = standbody.dealer_cards;
+        let dealerElements = document.getElementsByClassName("dealer");
+        for(let i = 0; i < dealer_cards.length; i++) {
+            dealerElements[i].src = dealer_cards[i].image;
+        }
+        let user_cards = standbody.player_cards;
+        let userElements = document.getElementsByClassName("user");
+        for(let i = 0; i < user_cards.length; i++) {
+            userElements[i].src = user_cards[i].image;
+        }
+        if(standbody.win == 0) {
+          document.getElementById("dealer_total").innerHTML = 'win';
+          document.getElementById("user_total").innerHTML = 'lose';
+        }
+        else if(standbody.win == 1) {
+          document.getElementById("dealer_total").innerHTML = 'lose';
+          document.getElementById("user_total").innerHTML = 'win';
+        }
+        else {
+          document.getElementById("dealer_total").innerHTML = 'tie';
+          document.getElementById("user_total").innerHTML = 'tie';
+        }
         console.log(standbody.win)
         console.log(standbody);
       }
