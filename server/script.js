@@ -100,6 +100,9 @@ app.get("/start/:username", (req, res) => {
 
                 data.dealer_cards = dealer_cards;
                 data.player_cards = player_cards;
+                data.player_total = player_total;
+                data.player_total = dealer_total;
+                data.win = 3;
                 
                 res.send(data);
 
@@ -139,7 +142,9 @@ app.get("/start/:username", (req, res) => {
 
             data.dealer_cards = dealer_cards;
             data.player_cards = player_cards;
-            data.win = 1
+            data.player_total = player_total;
+            data.dealer_total = dealer_total;
+            data.win = 3;
 
             res.send(data);
 
@@ -186,7 +191,12 @@ app.get("/hit/:username", (req, res) => {
             data.win = 0
         }
         data.dealer_cards = [dealer_cards[0]];
+        if(data.win == 0) {
+            data.dealer_cards = dealer_cards;
+        }
         data.player_cards = player_cards;
+        data.player_total = player_total;
+        data.dealer_total = dealer_total;
         res.send(data);
     });
 
@@ -227,6 +237,8 @@ app.get("/stand/:username", (req, res) => {
         }
         data.dealer_cards = dealer_cards;
         data.player_cards = player_cards;
+        data.player_total = player_total;
+        data.dealer_total = dealer_total;
 
         if((player_total > dealer_total || dealer_total > 21) && player_total <= 21)
         {
