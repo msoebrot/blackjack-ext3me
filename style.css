@@ -4,43 +4,95 @@ body {
   background-attachment:fixed;
   background-size:cover;
   background-position:center;
-  zoom:.60; 
+  margin:0 auto ;
+  overflow: hidden;
+
 }
-.text{
+.text{  
     font-family:'Berlin Sans FB Demi', sans-serif;
-    font-size:70px;
+    font-size:3.5em;
+    font-weight: bolder;
+    
 }
 .box{
-    height:200px;
-    width:700px;
+    height:7em;
+    width:30em;
     background-color:#fcb4f2; 
     border:15px solid;
     padding: 25px;
     position:relative;
-    top:100px;
-    right:500px;
-    left:700px; 
+    top:35px;
+
+    margin:0 auto ;
+
 }
 #icons{
-    height:20em ;
-    width: 20em;
+    height:5em ;
+    width: 5em;
+    margin:0 auto ;
+    
 }
 h1{
     color:#ff002a;
     text-align:center ;
+    transform:translateY(-45px)
 }
 
 .shark{
-    position:absolute;
-    top: 10px;
-    right: 10px; 
+    position:relative;
+    left:6em;
+    bottom:3.5em;
+    margin:0 auto ;
+    
+
 }
 
 .bonefish{
-    position: absolute;
-    top: 5px;
-    left: 10px;
+    position:relative;
+    right:17em;
+    bottom:3.5em;
     transform: rotate(-20deg);
+    margin:0 auto ; 
 }
+.helmet{
+    position:relative;
+    top:3em;
+    right:4em;
+    margin:0 auto ;
+  
+}
+p{
+    position:relative; 
+    left:400px;
+    top:30px; 
+    color:azure;
+    margin:0 auto ;
+}
+.pass{
+    font-family:'Berlin Sans FB Demi', sans-serif;
+    font-size:3.5em;
+    font-weight: bolder;
+    margin:0 auto ;
+    transform:translateY(-105px)
 
-
+}
+.rectangle1{
+    width:30em;
+    height:3.5em ;
+    background-color:#fcb4f2; 
+    border:15px solid;
+    padding: 25px;
+    position:relative;
+    bottom: 270px;
+    margin:0 auto ;
+}
+.rectangle2{
+    width:30em;
+    height:3.5em ;
+    background-color:#fcb4f2; 
+    border:15px solid;
+    padding: 25px;
+    position:relative;
+    bottom:215px ;
+    margin:0 auto ;
+}
