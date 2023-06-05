@@ -18,7 +18,6 @@ let player_cards = [];
 let cards = [];
 let data = new Object();
 let face = ['KING', 'QUEEN', 'JACK'];
-let lost = false;
 
 function add_value(cardlist, cardvalue) {
     if(face.includes(cardvalue)) {
@@ -39,10 +38,10 @@ function empty_list(list) {
 function has_ace(hand) {
     for(let i = 0; i < hand.length; i++) {
         if(hand[i].value == "ACE") {
-            return i;
+            return true;
         }
     }
-    return -1;
+    return false;
 }
 
 //Function to start a game
@@ -67,24 +66,16 @@ app.get("/start/:username", (req, res) => {
 		    // Printing status code
 		    console.log(response.statusCode);
 
-            //console.log(body);
-
             deckbody = JSON.parse(body);
             deckid = deckbody.deck_id;
             remaining_cards = deckbody.remaining;
 
-            //console.log(deckid);
-            //console.log(remaining_cards);
-
             let starturl = `https://deckofcardsapi.com/api/deck/${deckid}/draw/?count=4`;
-            //console.log(starturl)
             request(starturl, (error, response, body)=>{
                 if(error) console.log(error)
 	   
 		        // Printing status code
-		        //console.log(response.statusCode);
-
-                //console.log(body);
+		        console.log(response.statusCode);
 
                 startbody = JSON.parse(body);
                 deckid = startbody.deck_id;
@@ -107,17 +98,13 @@ app.get("/start/:username", (req, res) => {
                 player_cards.push(cards[2]);
                 player_total = add_value(player_total, cards[2].value);
 
-                //console.log(cards);
-                console.log(dealer_cards);
-                console.log(player_cards);
-                console.log(player_total);
-                console.log(dealer_total);
-
                 data.dealer_cards = dealer_cards;
                 data.player_cards = player_cards;
+                data.player_total = player_total;
+                data.player_total = dealer_total;
+                data.win = 3;
                 
                 res.send(data);
-                //console.log(data)
 
                 dealer_cards.push(cards[3]);
                 dealer_total = add_value(dealer_total, cards[3].value);
@@ -126,14 +113,11 @@ app.get("/start/:username", (req, res) => {
     }
     else {
         let starturl = `https://deckofcardsapi.com/api/deck/${deckid}/draw/?count=4`;
-        //console.log(starturl)
         request(starturl, (error, response, body)=>{
             if(error) console.log(error)
 	   
 		    // Printing status code
-		    //console.log(response.statusCode);
-
-            //console.log(body);
+		    console.log(response.statusCode);
 
             startbody = JSON.parse(body);
             deckid = startbody.deck_id;
@@ -158,11 +142,9 @@ app.get("/start/:username", (req, res) => {
 
             data.dealer_cards = dealer_cards;
             data.player_cards = player_cards;
-
-            console.log(dealer_cards);
-            console.log(player_cards);
-            console.log(player_total);
-            console.log(dealer_total);
+            data.player_total = player_total;
+            data.dealer_total = dealer_total;
+            data.win = 3;
 
             res.send(data);
 
@@ -195,20 +177,26 @@ app.get("/hit/:username", (req, res) => {
         remaining_cards = hitbody.remaining;
         data.id = deckid;
         data.remaining = remaining_cards;
-        console.log(deckid);
-        console.log(remaining_cards);
 
         let card = hitbody.cards[0];
         let value = card.value;
         let image = card.image;
         player_cards.push({"value": value, "image": image});
         player_total = add_value(player_total, value);
+        data.win = 3
+        if(player_total > 21 && has_ace(player_cards)) {
+            player_total = player_total - 10
+        }
+        else if(player_total > 21){
+            data.win = 0
+        }
         data.dealer_cards = [dealer_cards[0]];
+        if(data.win == 0) {
+            data.dealer_cards = dealer_cards;
+        }
         data.player_cards = player_cards;
-        console.log(dealer_cards);
-        console.log(player_cards);
-        console.log(player_total);
-        console.log(dealer_total);
+        data.player_total = player_total;
+        data.dealer_total = dealer_total;
         res.send(data);
     });
 
@@ -220,36 +208,52 @@ app.get("/stand/:username", (req, res) => {
     console.log('stand');
     console.log(username);
     
-    let standurl = `https://deckofcardsapi.com/api/deck/${deckid}/draw/?count=1`;
-    while(dealer_total < player_total || dealer_total < 17) {
-        request(standurl, (error, response, body)=>{
-            if(error) console.log(error);
+    let standurl = `https://deckofcardsapi.com/api/deck/${deckid}/draw/?count=20`;
+    request(standurl, (error, response, body)=>{
+        if(error) console.log(error);
 
-            console.log(response.statusCode);
+        console.log(response.statusCode);
 
-            let standbody = JSON.parse(body);
-            deckid = standbody.deck_id;
-            remaining_cards = standbody.remaining;
-            data.id = deckid;
-            data.remaining = remaining_cards;
-            console.log(deckid);
-            console.log(remaining_cards);
+        let standbody = JSON.parse(body);
+        deckid = standbody.deck_id;
+        remaining_cards = standbody.remaining;
+        data.id = deckid;
+        data.remaining = remaining_cards;
+        let i = 0;
 
-            let card = standbody.cards[0];
+        while(dealer_total <= player_total && dealer_total < 17 && player_total <= 21)
+        {
+            let card = standbody.cards[i];
             let value = card.value;
             let image = card.image;
+
             dealer_cards.push({"value": value, "image": image});
             dealer_total = add_value(dealer_total, value);
-            data.dealer_cards = dealer_cards;
-            data.player_cards = player_cards;
             
-        })
-    }
-    console.log(dealer_cards);
-    console.log(player_cards);
-    console.log(player_total);
-    console.log(dealer_total);
-    res.send(data);
+            if(dealer_total > 21 && has_ace(dealer_cards)) {
+                dealer_total = dealer_total - 10
+            }
+            i++;
+        }
+        data.dealer_cards = dealer_cards;
+        data.player_cards = player_cards;
+        data.player_total = player_total;
+        data.dealer_total = dealer_total;
+
+        if((player_total > dealer_total || dealer_total > 21) && player_total <= 21)
+        {
+            data.win = 1
+        }
+        else if(player_total == dealer_total && player_total <= 21) {
+            data.win = 2 //nothing happens
+        }
+        else {
+            data.win = 0
+        }
+        res.send(data);
+        
+    })
+    
 });
 
 //Function to update balance
