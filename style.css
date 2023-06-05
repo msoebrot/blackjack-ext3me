@@ -24,13 +24,11 @@ body {
     top:35px;
 
     margin:0 auto ;
-
 }
 #icons{
     height:5em ;
     width: 5em;
     margin:0 auto ;
-    
 }
 h1{
     color:#ff002a;
@@ -43,8 +41,6 @@ h1{
     left:6em;
     bottom:3.5em;
     margin:0 auto ;
-    
-
 }
 
 .bonefish{
@@ -59,7 +55,7 @@ h1{
     top:3em;
     right:4em;
     margin:0 auto ;
-  
+ 
 }
 p{
     position:relative; 
