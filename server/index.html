@@ -43,9 +43,13 @@
   <img class="dealer" src="back.png" alt="image">
   <img class="dealer" src="back.png" alt="image">
   <img class="dealer" src="back.png" alt="image">
+  <img class="dealer" src="back.png" alt="image">
+  <img class="dealer" src="back.png" alt="image">
 
   <p> <b id="username"> User</b>: </p>
   <p><b id="user_total"> - </b></p>
+  <img class="user" src="back.png" alt="image">
+  <img class="user" src="back.png" alt="image">
   <img class="user" src="back.png" alt="image">
   <img class="user" src="back.png" alt="image">
   <img class="user" src="back.png" alt="image">
@@ -83,6 +87,7 @@
           let balancebody = JSON.parse(xhr_balance.responseText);
           if(balancebody.validUser == false) {
             document.getElementById('username').innerHTML = "Invalid username or password";
+            validUsername = false;
           }
           else {
             document.getElementById('username').innerHTML = username + '(' + password +  ')';
@@ -94,13 +99,14 @@
     }
 
     function getBet() {
+      validBet = false;
       if(validUsername == false) {
         return;
       }
       if(started == false) {
         bet = Number(betField.value);
         let bal = Number(document.getElementById('balance').innerHTML);
-        if(bet > bal)
+        if(bet > bal || bet <= 0)
         {
           document.getElementById("bet").innerHTML = "invalid bet";
         }
@@ -122,6 +128,7 @@
 
     // Function to handle the "Deal" button click
     function deal() {
+      console.log(started)
       if(validBet == false || started == true) {
         return;
       }
@@ -182,6 +189,7 @@
         if(hitbody.win == 0) {
           document.getElementById("dealer_total").innerHTML = 'win';
           document.getElementById("user_total").innerHTML = 'lose';
+          document.getElementById('balance').innerHTML = hitbody.balance;
           started = false;
         }
         console.log(hitbody);
@@ -222,6 +230,7 @@
           document.getElementById("dealer_total").innerHTML = 'tie';
           document.getElementById("user_total").innerHTML = 'tie';
         }
+        document.getElementById('balance').innerHTML = standbody.balance;
         started = false;
         console.log(standbody.win)
         console.log(standbody);

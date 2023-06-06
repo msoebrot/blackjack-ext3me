@@ -21,10 +21,10 @@ let face = ['KING', 'QUEEN', 'JACK'];
 let bet = 0;
 
 // username dictionary
-let userDict = {'username1' : 500, 'username2' : 500, 'username#' : 500};
+let userDict = {'username1' : 5000, 'username2' : 500, 'username_3' : 500};
 
 // password dictionary tied to username
-let passwordDict = {'username1' : 'bill420', 'username 2' : 'emily21', 'username#' : 'blues clues'};
+let passwordDict = {'username1' : 'bill420', 'username 2' : 'emily21', 'username_3' : 'blues_clues'};
 
 // adds a valid (not used) username to dictionary 
 function valid_username(username) {
@@ -32,11 +32,13 @@ function valid_username(username) {
     if(validateUsername(username)) {
         if (username in userDict){ 
             // adds username to dictionary 
-            return userDict.username; 
+            console.log(userDict[username]);
+            return userDict[username]; 
         }
         else {
-            userDict[username].push(500); // gives user a starter balance 
-            return userDict.username; 
+            userDict[username] = 500; // gives user a starter balance 
+            console.log(userDict[username]);
+            return userDict[username]; 
         }
     }
     return -1;
@@ -51,10 +53,10 @@ function validateUsername (username) {
 
 // adds password to username 
 function checkPassword(username, password) {
-    let character = "0123456789abcdefghijklmnopqerstuvwxyz!@#$%^&*()ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    let character = "0123456789abcdefghijklmnopqerstuvwxyz!@#$%^&*()_ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     let passwordLength = 12; 
     if(username in passwordDict) {
-        return password === passwordDict[username];
+        return password == passwordDict[username];
     }
     else {
         if(passwordLength <= 12) {
@@ -65,14 +67,17 @@ function checkPassword(username, password) {
                     return false;
                 }
             }
+            passwordDict[username] = password;
+            return true;
         }
+        return false;
     }
 }
 
 // adds a "base" balance to user if username does NOT exist  
 function update_balance ( username, bet_amount ) {
     let current_balance = valid_username(username);
-    userDict[username] = current_balance + bet_amount;
+    userDict[username] = Number(current_balance) + Number(bet_amount);
     return userDict[username];
 }
 
@@ -248,7 +253,7 @@ app.get("/hit/:username", (req, res) => {
         }
         else if(player_total > 21){
             data.win = 0;
-            //update_balance(username, (-1 * bet));
+            update_balance(username, (-1 * bet));
             bet = 0;
         }
         data.dealer_cards = [dealer_cards[0]];
@@ -258,6 +263,7 @@ app.get("/hit/:username", (req, res) => {
         data.player_cards = player_cards;
         data.player_total = player_total;
         data.dealer_total = dealer_total;
+        data.balance = userDict[username];
         res.send(data);
     });
 
@@ -304,15 +310,18 @@ app.get("/stand/:username", (req, res) => {
         if((player_total > dealer_total || dealer_total > 21) && player_total <= 21)
         {
             data.win = 1
+            update_balance(username, bet);
         }
         else if(player_total == dealer_total && player_total <= 21) {
             data.win = 2 //nothing happens
         }
         else {
             data.win = 0
+            update_balance(username, (-1 * bet));
         }
         bet = 0;
         //send the balance
+        data.balance = userDict[username];
         res.send(data);
         
     })
@@ -323,14 +332,19 @@ app.get("/stand/:username", (req, res) => {
 app.get("/validate/:username/:password", (req, res) => {
     let username = req.params['username'];
     let password = req.params['password'];
-    console.log('balance');
+    console.log('validate');
     console.log(username);
     console.log(password)
     let user = new Object();
     user.username = username;
     user.password = password;
-    user.validUser = true|| validBet == false;
-    user.balance = 100;
+    
+    user.balance = valid_username(username)
+    user.validUser = true;
+    if(user.balance == -1 || checkPassword(username, password) == false) {
+        user.validUser = false;
+        user.balance = -1;
+    }
     res.send(user)
 });
 
