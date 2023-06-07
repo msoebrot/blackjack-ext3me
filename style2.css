@@ -31,7 +31,7 @@ body {
     background-color:transparent;
     border-color: #fcb4f2;
     border-radius: 15px;
-    overflow:hidden;
+   
     
 }
 .balance{
@@ -126,7 +126,7 @@ body {
 }
 button{
     background-color: transparent;
-    border:none;
+    /*border:none;*/
 }
 #buttonadd{
     height:8.5em;
