@@ -11,8 +11,8 @@ xhr_user.onload = function() {
     body = JSON.parse(xhr_user.responseText);
     user = body.name;
     bal = body.bal;
-    console.log(user);
-    console.log(bal);
+    //console.log(user);
+    //console.log(bal);
     document.getElementById('name').innerHTML = user;
     document.getElementById('balance').innerHTML = bal;
 }
@@ -25,15 +25,13 @@ function getBet() {
         alert('Out of money!');
         location.replace("https://msoebrot.github.io/blackjack-ext3me/endscreen.html");
     }
-    if(started == false) {
+    else if(started == false) {
         bet = Number(pot.value);
         if(bet > bal || bet <= 0)
         {
             alert('Invalid bet');
-            //document.getElementById("bet").innerHTML = "invalid bet";
         }
         else {
-            //document.getElementById("bet").innerHTML = bet;
             validBet = true;
         }
     }
@@ -52,7 +50,6 @@ document.getElementById("buttonstop").addEventListener("click", stand);
 
 // Function to handle the "Deal" button click
 function deal() {
-    console.log('deal')
     getBet()
     if(validBet == false || started == true) {
         return;
@@ -64,10 +61,7 @@ function deal() {
     xhr_start.onload = function() {
         started = true;
         let startbody = JSON.parse(xhr_start.responseText);
-        console.log(startbody);
-
-        //document.getElementById("dealer_total").innerHTML = '-';
-        //document.getElementById("user_total").innerHTML = '-';
+        //console.log(startbody);
         
         let dealer_cards = startbody.dealer_cards;
         let dealerElements = document.getElementsByClassName("cardA");
@@ -91,7 +85,6 @@ function deal() {
 
     // Function to handle the "Hit" button click
 function hit() {
-    console.log('hit')
     if(validBet == false || started == false) {
         return;
     }
@@ -101,7 +94,6 @@ function hit() {
     xhr_hit.send(); //sends the request
     xhr_hit.onload = function() {
         let hitbody = JSON.parse(xhr_hit.responseText);
-        console.log(hitbody.win)
         let dealer_cards = hitbody.dealer_cards;
         let dealerElements = document.getElementsByClassName("cardA");
         for(let i = 0; i < dealer_cards.length; i++) {
@@ -117,14 +109,13 @@ function hit() {
             document.getElementById('balance').innerHTML = hitbody.balance;
             started = false;
         }
-        console.log(hitbody);
+        //console.log(hitbody);
     }
     console.log("Hit button clicked");
 }
 
     // Function to handle the "Stand" button click
 function stand() {
-    console.log("stand");
     if(validBet == false || started == false) {
         return;
     }
@@ -147,8 +138,8 @@ function stand() {
         bal = standbody.balance;
         document.getElementById('balance').innerHTML = standbody.balance;
         started = false;
-        console.log(standbody.win)
-        console.log(standbody);
+        //console.log(standbody.win)
+        //console.log(standbody);
     }
     console.log("Stand button clicked");
 }
