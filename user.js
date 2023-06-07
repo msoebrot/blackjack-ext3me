@@ -4,7 +4,6 @@ function checkUser() {
     let pass = password.value;
     if(user.length < 1 || pass.length < 1) {
         alert('invalid')
-        validUsername = false;
         return;
     }
     let xhr_balance = new XMLHttpRequest();
@@ -13,14 +12,9 @@ function checkUser() {
     xhr_balance.onload = function (){
         let balancebody = JSON.parse(xhr_balance.responseText);
         if(balancebody.validUser == false) {
-            //document.getElementById('name').innerHTML = "Invalid username or password";
             alert('invalid')
-            validUsername = false;
         }
         else {
-            //document.getElementById('name').innerHTML = user + '(' + pass +  ')';
-            //document.getElementById('balance').innerHTML = balancebody.balance;
-            validUsername = true;
             location.replace("https://msoebrot.github.io/blackjack-ext3me/gamescreen.html");
         }
     }  
