@@ -20,7 +20,6 @@ function checkUser() {
         else {
             //document.getElementById('name').innerHTML = user + '(' + pass +  ')';
             //document.getElementById('balance').innerHTML = balancebody.balance;
-            alert('valid')
             validUsername = true;
             location.replace("https://msoebrot.github.io/blackjack-ext3me/gamescreen.html");
         }
