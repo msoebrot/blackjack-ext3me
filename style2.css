@@ -8,7 +8,7 @@ body {
   align-items: center;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+    
 }
 .name{  
     font-family:'Berlin Sans FB Demi', sans-serif;
@@ -20,13 +20,18 @@ body {
     right:11em;
    
 }
-.pot{
+#pot{
     font-family:'Berlin Sans FB Demi', sans-serif;
     font-size:2em;
     font-weight: bolder;
     color:azure;
     position: relative;
-   
+    bottom:.3em;
+    background-color:transparent;
+    border-color: #fcb4f2;
+    border-radius: 15px;
+    overflow:hidden;
+    
 }
 .balance{
     font-family:'Berlin Sans FB Demi', sans-serif;
@@ -61,8 +66,7 @@ body {
     width:5em;
     margin:0 auto ;
     position: relative;
-    bottom:5em;
-    left:20em;
+    top:1.75em;
 }
 .stop{
     height:7em ;
@@ -70,7 +74,7 @@ body {
     margin:0 auto;
     position: relative;
     right:25em;
-    bottom:8em;
+    bottom: 7.7em;
 
 }
 .add{
@@ -108,7 +112,7 @@ body {
 }
 #game{
     position:relative;
-    bottom:25em;
+    bottom:40em;
 }
 #bet{
     position: relative;
@@ -116,6 +120,24 @@ body {
 }
 #usercard{
     position:relative;
-    bottom:6em;
 
+
+}
+button{
+    background-color: transparent;
+    border:none;
+}
+#buttonadd{
+    height:8.5em;
+    width: 8.5em;
+    position: relative;
+    bottom: 27.3em;
+    right: 42em;
+}
+#buttonstop{
+    height:8.5em;
+    width:8.5em;
+    position: relative;
+    bottom: 35.74em;
+    right:30em;
 }
