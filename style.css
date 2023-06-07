@@ -12,7 +12,8 @@ body {
     font-family:'Berlin Sans FB Demi', sans-serif;
     font-size:3.5em;
     font-weight: bolder;
-    
+    position: relative;
+
 }
 .box{
     height:7em;
@@ -26,8 +27,8 @@ body {
     margin:0 auto ;
 }
 #icons{
-    height:5em ;
-    width: 5em;
+    height:15em ;
+    width: 15em;
     margin:0 auto ;
 }
 h1{
@@ -38,29 +39,29 @@ h1{
 
 .shark{
     position:relative;
-    left:6em;
-    bottom:3.5em;
+    left:65em;
+    bottom:22.25em;
     margin:0 auto ;
 }
 
 .bonefish{
     position:relative;
-    right:17em;
-    bottom:3.5em;
+    right:12em;
+    bottom:22.25em;
     transform: rotate(-20deg);
     margin:0 auto ; 
 }
 .helmet{
-    position:relative;
-    top:3em;
-    right:4em;
+    position:relative;  
+    left:39em;
+    top:1em;
     margin:0 auto ;
  
 }
 p{
     position:relative; 
-    left:400px;
-    top:30px; 
+    left:7.25em;
+    top:.5em;
     color:azure;
     margin:0 auto ;
 }
@@ -69,26 +70,60 @@ p{
     font-size:3.5em;
     font-weight: bolder;
     margin:0 auto ;
-    transform:translateY(-105px)
+    position: relative;
+    top:1.75em;
+
+
 
 }
-.rectangle1{
+rectangle1{
     width:30em;
     height:3.5em ;
     background-color:#fcb4f2; 
     border:15px solid;
     padding: 25px;
     position:relative;
-    bottom: 270px;
+    
     margin:0 auto ;
 }
-.rectangle2{
+rectangle2{
     width:30em;
     height:3.5em ;
     background-color:#fcb4f2; 
     border:15px solid;
     padding: 25px;
     position:relative;
-    bottom:215px ;
     margin:0 auto ;
 }
+#password{
+    border:15px solid;
+    position:relative;   
+    top:2em;
+    right:7em;
+    margin:0 auto ;
+    font-family:'Berlin Sans FB Demi', sans-serif;
+    font-weight: bolder;
+    font-size:.75em;
+    color:azure;
+    background-color:#fcb4f2;
+    border-color: black;
+    overflow:hidden;
+    align-items: center;
+}
+#username{
+        border:15px solid;
+        position:relative;   
+        top:1.75em;
+        right:7.25em;
+        margin:0 auto ;
+        font-family:'Berlin Sans FB Demi', sans-serif;
+        font-weight: bolder;
+        font-size:.75em;
+        color:azure;
+        background-color:#fcb4f2;
+        border-color: black;
+        overflow:hidden;
+        align-items: center;
+    }
+    
+    
