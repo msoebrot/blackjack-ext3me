@@ -18,7 +18,8 @@ body {
     color:azure;
     position: relative;
     bottom:1em;
-    right:11em;
+    right: 11em;
+    text-align: left;
    
 }
 #pot{
@@ -52,7 +53,7 @@ body {
 .shark{
     height:13em ;
     width:13em;
-    margin:0 auto ;
+    margin:0 auto;
     position: relative; 
 }
 .fish{

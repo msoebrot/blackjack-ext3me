@@ -23,7 +23,7 @@ function getBet() {
     validBet = false;
     if(bal <= 0) {
         alert('Out of money!');
-        //location.replace("https://msoebrot.github.io/blackjack-ext3me/endscreen.html");
+        location.replace("https://msoebrot.github.io/blackjack-ext3me/endscreen.html");
     }
     if(started == false) {
         bet = Number(pot.value);
@@ -72,10 +72,10 @@ function deal() {
         let dealer_cards = startbody.dealer_cards;
         let dealerElements = document.getElementsByClassName("cardA");
         for(let i = 0; i < dealer_cards.length; i++) {
-            dealerElements[i].style.backgroundImage = dealer_cards[i].image;
+            dealerElements[i].src = dealer_cards[i].image;
         }
         for(let i = dealer_cards.length; i < dealerElements.length; i++) {
-            dealerElements[i].style.backgroundImage = "back.png";
+            dealerElements[i].src = "PNGs/empty.png";
         }
         let user_cards = startbody.player_cards;
         let userElements = document.getElementsByClassName("cardB");
@@ -83,7 +83,7 @@ function deal() {
             userElements[i].src = user_cards[i].image;
         }
         for(let i = user_cards.length; i < userElements.length; i++) {
-            userElements[i].src = "back.png";
+            userElements[i].src = "PNGs/empty.png";
         }
     }
     console.log("Deal button clicked");
