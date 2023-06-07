@@ -126,7 +126,7 @@ body {
 }
 button{
     background-color: transparent;
-    /*border:none;*/
+    /*border:none; makes border disappear*/
 }
 #buttonadd{
     height:8.5em;
