@@ -19,6 +19,7 @@ let cards = [];
 let data = new Object();
 let face = ['KING', 'QUEEN', 'JACK'];
 let bet = 0;
+let name = "";
 
 // username dictionary
 let userDict = {'username1' : 5000, 'username2' : 500, 'username_3' : 500};
@@ -165,7 +166,7 @@ app.get("/start/:username/:bet", (req, res) => {
                 data.dealer_cards = dealer_cards;
                 data.player_cards = player_cards;
                 data.player_total = player_total;
-                data.player_total = dealer_total;
+                data.dealer_total = dealer_total;
                 data.win = 3;
                 
                 res.send(data);
@@ -332,6 +333,7 @@ app.get("/stand/:username", (req, res) => {
 app.get("/validate/:username/:password", (req, res) => {
     let username = req.params['username'];
     let password = req.params['password'];
+    name = username;
     console.log('validate');
     console.log(username);
     console.log(password)
@@ -346,6 +348,13 @@ app.get("/validate/:username/:password", (req, res) => {
         user.balance = -1;
     }
     res.send(user)
+});
+
+app.get("/getUser", (req, res) => {
+    let body = new Object();
+    body.name = name;
+    body.bal = userDict[name];
+    res.send(body)
 });
 
 app.listen(3000, () => {
