@@ -15,6 +15,7 @@ function checkUser() {
             alert('invalid')
         }
         else {
+            alert('valid');
             location.replace("https://msoebrot.github.io/blackjack-ext3me/gamescreen.html");
         }
     }  
