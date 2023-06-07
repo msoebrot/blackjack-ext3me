@@ -17,11 +17,24 @@
 </head>
 <body>
   <h1>Blackjack Game</h1>
+
+  <div class="form">
+    <label for="userField">Enter username: </label>
+    <input type="text" required id="userField" class="userField">
+    <input type="submit" value="Submit user" class="userSubmit">
+  </div>
+
+  <div class="form">
+    <label for="passField">Enter password: </label>
+    <input type="password" required id="passField" class="passField">
+  </div>
   
   <button id="dealButton">Deal</button>
   <button id="hitButton">Hit</button>
   <button id="standButton">Stand</button>
-  <p> Dealer: <b id="dealer_total"> - </b></p>
+  <p> <b> Dealer</b>: </p>
+  <p><b id="dealer_total"> - </b></p>
+  
 
   <img class="dealer" src="back.png" alt="image">
   <img class="dealer" src="back.png" alt="image">
@@ -30,8 +43,11 @@
   <img class="dealer" src="back.png" alt="image">
   <img class="dealer" src="back.png" alt="image">
   <img class="dealer" src="back.png" alt="image">
+  <img class="dealer" src="back.png" alt="image">
+  <img class="dealer" src="back.png" alt="image">
 
-  <p> User: <b id="user_total"> - </b></p>
+  <p> <b id="username"> User</b>: </p>
+  <p><b id="user_total"> - </b></p>
   <img class="user" src="back.png" alt="image">
   <img class="user" src="back.png" alt="image">
   <img class="user" src="back.png" alt="image">
@@ -39,9 +55,72 @@
   <img class="user" src="back.png" alt="image">
   <img class="user" src="back.png" alt="image">
   <img class="user" src="back.png" alt="image">
+  <img class="user" src="back.png" alt="image">
+  <img class="user" src="back.png" alt="image">
+
+  <div class="form">
+    <label for="betField">Enter bet amount: </label>
+    <input type="number" min="1" required id="betField" class="betField">
+    <input type="submit" value="Submit bet" class="betSubmit">
+  </div>
+  <p> <b> Bet</b>: <div id="bet"> - </div></p>
+  <p> <b> Balance</b>: <div id="balance"> - </div></p>
   
   <script>
-    let username = 'bill';
+    let userSubmit = document.querySelector('.userSubmit');
+    let betSubmit = document.querySelector('.betSubmit');
+    let bet = 0;
+    let validUsername = false;
+    let validBet = false;
+    let started = false;
+    let username = "";
+
+    
+    function checkUser() {
+      if(started == false) {
+        username = userField.value;
+        let password = passField.value;
+        let xhr_balance = new XMLHttpRequest();
+        xhr_balance.open("GET", `http://localhost:3000/validate/${username}/${password}`);
+        xhr_balance.send();
+        xhr_balance.onload = function (){
+          let balancebody = JSON.parse(xhr_balance.responseText);
+          if(balancebody.validUser == false) {
+            document.getElementById('username').innerHTML = "Invalid username or password";
+            validUsername = false;
+          }
+          else {
+            document.getElementById('username').innerHTML = username + '(' + password +  ')';
+            document.getElementById('balance').innerHTML = balancebody.balance;
+            validUsername = true;
+          }
+        }  
+      }
+    }
+
+    function getBet() {
+      validBet = false;
+      if(validUsername == false) {
+        return;
+      }
+      if(started == false) {
+        bet = Number(betField.value);
+        let bal = Number(document.getElementById('balance').innerHTML);
+        if(bet > bal || bet <= 0)
+        {
+          document.getElementById("bet").innerHTML = "invalid bet";
+        }
+        else {
+          document.getElementById("bet").innerHTML = bet;
+          validBet = true;
+        }
+        
+      }
+    }
+
+    userSubmit.addEventListener('click', checkUser);
+    betSubmit.addEventListener('click', getBet);
+    //document.getElementById("username").innerHTML = username;
     // Add event listeners to the buttons
     document.getElementById("dealButton").addEventListener("click", deal);
     document.getElementById("hitButton").addEventListener("click", hit);
@@ -49,11 +128,16 @@
 
     // Function to handle the "Deal" button click
     function deal() {
+      console.log(started)
+      if(validBet == false || started == true) {
+        return;
+      }
       // TODO: Implement the logic for dealing the cards
       let xhr_start = new XMLHttpRequest(); //Defines xmlhttp objject
-      xhr_start.open("GET", `http://localhost:3000/start/${username}`); // request to the website
+      xhr_start.open("GET", `http://localhost:3000/start/${username}/${bet}`); // request to the website
       xhr_start.send(); //sends the request
       xhr_start.onload = function() {
+        started = true;
         let startbody = JSON.parse(xhr_start.responseText);
         console.log(startbody);
 
@@ -82,6 +166,9 @@
 
     // Function to handle the "Hit" button click
     function hit() {
+      if(validBet == false || started == false) {
+        return;
+      }
       // TODO: Implement the logic for hitting (drawing) a card
       let xhr_hit = new XMLHttpRequest(); //Defines xmlhttp objject
       xhr_hit.open("GET", `http://localhost:3000/hit/${username}`); // request to the website
@@ -102,6 +189,8 @@
         if(hitbody.win == 0) {
           document.getElementById("dealer_total").innerHTML = 'win';
           document.getElementById("user_total").innerHTML = 'lose';
+          document.getElementById('balance').innerHTML = hitbody.balance;
+          started = false;
         }
         console.log(hitbody);
       }
@@ -110,6 +199,9 @@
 
     // Function to handle the "Stand" button click
     function stand() {
+      if(validBet == false || started == false) {
+        return;
+      }
       // TODO: Implement the logic for standing (ending the player's turn)
       let xhr_stand = new XMLHttpRequest(); //Defines xmlhttp objject
       xhr_stand.open("GET", `http://localhost:3000/stand/${username}`); // request to the website
@@ -138,6 +230,8 @@
           document.getElementById("dealer_total").innerHTML = 'tie';
           document.getElementById("user_total").innerHTML = 'tie';
         }
+        document.getElementById('balance').innerHTML = standbody.balance;
+        started = false;
         console.log(standbody.win)
         console.log(standbody);
       }

@@ -18,47 +18,67 @@ let player_cards = [];
 let cards = [];
 let data = new Object();
 let face = ['KING', 'QUEEN', 'JACK'];
+let bet = 0;
 
 // username dictionary
-let userDict = {'username1' : 500, 'username2' : 500, 'username#' : 500};
+let userDict = {'username1' : 5000, 'username2' : 500, 'username_3' : 500};
 
 // password dictionary tied to username
-let passwordDict = {'username1' : 'bill420', 'username 2' : 'emily21', 'username#' : 'blues clues'};
+let passwordDict = {'username1' : 'bill420', 'username 2' : 'emily21', 'username_3' : 'blues_clues'};
 
 // adds a valid (not used) username to dictionary 
-function valid_username ( username ) {
+function valid_username(username) {
     // alerts if username exists
-    if (username in userDict){ 
-        // adds username to dictionary 
-        return userDict.username; 
+    if(validateUsername(username)) {
+        if (username in userDict){ 
+            // adds username to dictionary 
+            console.log(userDict[username]);
+            return userDict[username]; 
+        }
+        else {
+            userDict[username] = 500; // gives user a starter balance 
+            console.log(userDict[username]);
+            return userDict[username]; 
+        }
     }
-    else {
-        userDict[username].push(500); // gives user a starter balance 
-    }
+    return -1;
+    
 }    
 
-// adds a charchter limit for username
+// adds a character limit for username
 function validateUsername (username) {
     let alphanumericRegex = /^[a-zA-Z0-9_]+$/;
-        return alphanumericRegex.test(username) && username.length >= 2 && username.length <=10;  
+    return alphanumericRegex.test(username) && username.length >= 2 && username.length <=10;  
 }
 
 // adds password to username 
-function checkPassword() {
-    let password = document.getElementById("password");
-    let charchter = "0123456789abcdefghijklmnopqerstuvwxyz!@#$%^&*()ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+function checkPassword(username, password) {
+    let character = "0123456789abcdefghijklmnopqerstuvwxyz!@#$%^&*()_ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     let passwordLength = 12; 
-    if (passwordText == "bill420") {
-        return true;
+    if(username in passwordDict) {
+        return password == passwordDict[username];
     }
-    alert ("Incorrect Password!");
-    return false;
+    else {
+        if(passwordLength <= 12) {
+            let char = ' ';
+            for(let i = 0; i < password.length; i++) {
+                char = password.charAt(i)
+                if(character.includes(char) == false) {
+                    return false;
+                }
+            }
+            passwordDict[username] = password;
+            return true;
+        }
+        return false;
+    }
 }
 
 // adds a "base" balance to user if username does NOT exist  
 function update_balance ( username, bet_amount ) {
-    let current_balance = valid_username (username);
-    userDict.username = current_balance + bet_amount;
+    let current_balance = valid_username(username);
+    userDict[username] = Number(current_balance) + Number(bet_amount);
+    return userDict[username];
 }
 
 
@@ -88,8 +108,9 @@ function has_ace(hand) {
 }
 
 //Function to start a game
-app.get("/start/:username", (req, res) => {
+app.get("/start/:username/:bet", (req, res) => {
     let username = req.params['username'];
+    bet = req.params['bet'];
     console.log('start');
     console.log(username);
     dealer_total = 0;
@@ -231,7 +252,9 @@ app.get("/hit/:username", (req, res) => {
             player_total = player_total - 10
         }
         else if(player_total > 21){
-            data.win = 0
+            data.win = 0;
+            update_balance(username, (-1 * bet));
+            bet = 0;
         }
         data.dealer_cards = [dealer_cards[0]];
         if(data.win == 0) {
@@ -240,6 +263,7 @@ app.get("/hit/:username", (req, res) => {
         data.player_cards = player_cards;
         data.player_total = player_total;
         data.dealer_total = dealer_total;
+        data.balance = userDict[username];
         res.send(data);
     });
 
@@ -286,13 +310,18 @@ app.get("/stand/:username", (req, res) => {
         if((player_total > dealer_total || dealer_total > 21) && player_total <= 21)
         {
             data.win = 1
+            update_balance(username, bet);
         }
         else if(player_total == dealer_total && player_total <= 21) {
             data.win = 2 //nothing happens
         }
         else {
             data.win = 0
+            update_balance(username, (-1 * bet));
         }
+        bet = 0;
+        //send the balance
+        data.balance = userDict[username];
         res.send(data);
         
     })
@@ -300,10 +329,23 @@ app.get("/stand/:username", (req, res) => {
 });
 
 //Function to update balance
-app.get("/balance/:username", (req, res) => {
+app.get("/validate/:username/:password", (req, res) => {
     let username = req.params['username'];
-    console.log('balance');
+    let password = req.params['password'];
+    console.log('validate');
     console.log(username);
+    console.log(password)
+    let user = new Object();
+    user.username = username;
+    user.password = password;
+    
+    user.balance = valid_username(username)
+    user.validUser = true;
+    if(user.balance == -1 || checkPassword(username, password) == false) {
+        user.validUser = false;
+        user.balance = -1;
+    }
+    res.send(user)
 });
 
 app.listen(3000, () => {
