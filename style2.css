@@ -129,7 +129,7 @@ body {
 }
 button{
     background-color: transparent;
-    /*border:none; makes border disappear*/
+    border:none; 
 }
 #buttonadd{
     height:8.5em;
