@@ -19,8 +19,7 @@ body {
     position: relative;
     bottom:1em;
     right: 11em;
-    text-align: left;
-   
+    align-items: baseline;    
 }
 #pot{
     font-family:'Berlin Sans FB Demi', sans-serif;
