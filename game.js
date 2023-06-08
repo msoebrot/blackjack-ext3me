@@ -21,11 +21,7 @@ xhr_user.onload = function() {
 function getBet() {
     console.log("getBet");
     validBet = false;
-    if(bal <= 0) {
-        alert('Out of money!');
-        location.replace("https://msoebrot.github.io/blackjack-ext3me/endscreen.html");
-    }
-    else if(started == false) {
+    if(started == false) {
         bet = Number(pot.value);
         if(bet > bal || bet <= 0)
         {
@@ -109,6 +105,11 @@ function hit() {
             document.getElementById('balance').innerHTML = hitbody.balance;
             started = false;
         }
+
+        if(bal <= 0) {
+            alert('Out of money!');
+            location.replace("https://msoebrot.github.io/blackjack-ext3me/endscreen.html");
+        }
         //console.log(hitbody);
     }
     console.log("Hit button clicked");
@@ -140,6 +141,10 @@ function stand() {
         started = false;
         //console.log(standbody.win)
         //console.log(standbody);
+        if(bal <= 0) {
+            alert('Out of money!');
+            location.replace("https://msoebrot.github.io/blackjack-ext3me/endscreen.html");
+        }
     }
     console.log("Stand button clicked");
 }

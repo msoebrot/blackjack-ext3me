@@ -22,10 +22,10 @@ let bet = 0;
 let name = "";
 
 // username dictionary
-let userDict = {'username1' : 5000, 'username2' : 500, 'username_3' : 500};
+let userDict = {'tree' : 10000, 'msoeb' : 10000, 'giannella' : 10000};
 
 // password dictionary tied to username
-let passwordDict = {'username1' : 'bill420', 'username 2' : 'emily21', 'username_3' : 'blues_clues'};
+let passwordDict = {'tree' : 'branch', 'msoeb' : 'secret', 'giannella' : 'password'};
 
 // adds a valid (not used) username to dictionary 
 function valid_username(username) {
@@ -37,7 +37,7 @@ function valid_username(username) {
             return userDict[username]; 
         }
         else {
-            userDict[username] = 500; // gives user a starter balance 
+            userDict[username] = 1000; // gives user a starter balance 
             console.log(userDict[username]);
             return userDict[username]; 
         }
@@ -102,6 +102,7 @@ function empty_list(list) {
 function has_ace(hand) {
     for(let i = 0; i < hand.length; i++) {
         if(hand[i].value == "ACE") {
+            hand[i].value = 1;
             return true;
         }
     }
