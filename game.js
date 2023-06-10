@@ -19,13 +19,14 @@ xhr_user.onload = function() {
 
 
 function getBet() {
-    console.log("getBet"); 
+    //console.log("getBet"); 
     let pool = Number(pot.value);
-    console.log(pool)
+    //console.log(pool)
     if(started === false && pool > 0 || pool === bet) {
         if(pool > bal || pool <= 0)
         {
             alert('Invalid bet');
+            validBet = false;
         }
         else {
             validBet = true;
@@ -33,9 +34,10 @@ function getBet() {
         }
     }
     else {
+        alert('Invalid bet');
         validBet = false;
     }
-    console.log(started)
+    //console.log(started)
 }
 
 function returnToLogin() {
@@ -52,12 +54,12 @@ document.getElementById("buttonstop").addEventListener("click", stand);
 // Function to handle the "Deal" button click
 function deal() {
     getBet()
-    console.log(validBet);
-    console.log(started);
+    //console.log(validBet);
+    //console.log(started);
     if(validBet == false || started == true) {
         return;
     }
-    console.log('in');
+    //console.log('in');
     started = true;
     // TODO: Implement the logic for dealing the cards
     let xhr_start = new XMLHttpRequest(); //Defines xmlhttp objject
@@ -80,21 +82,21 @@ function deal() {
         for(let i = 0; i < user_cards.length; i++) {
             userElements[i].src = user_cards[i].image;
         }
-        for(let i = user_cards.length; i < userElements.length; i++) {
+        for(let i = user_cards.length; i < userElements.length && i < 5; i++) {
             userElements[i].src = "PNGs/empty.png";
         }
     }
-    console.log("Deal button clicked");
+    //console.log("Deal button clicked");
 }
 
     // Function to handle the "Hit" button click
 function hit() {
-    console.log(validBet);
-    console.log(started);
+    //console.log(validBet);
+    //console.log(started);
     if(validBet == false || started == false) {
         return;
     }
-    console.log('in')
+    //console.log('in')
     // TODO: Implement the logic for hitting (drawing) a card
     let xhr_hit = new XMLHttpRequest(); //Defines xmlhttp objject
     xhr_hit.open("GET", `http://localhost:3000/hit/${user}`); // request to the website
@@ -108,7 +110,7 @@ function hit() {
         }
         let user_cards = hitbody.player_cards;
         let userElements = document.getElementsByClassName("cardB");
-        for(let i = 0; i < user_cards.length; i++) {
+        for(let i = 0; i < user_cards.length && i < 5; i++) {
             userElements[i].src = user_cards[i].image;
         }
         if(hitbody.win == 0) {
@@ -122,17 +124,17 @@ function hit() {
         }
         //console.log(hitbody);
     }
-    console.log("Hit button clicked");
+    //console.log("Hit button clicked");
 }
 
     // Function to handle the "Stand" button click
 function stand() {
-    console.log(validBet);
-    console.log(started);
+    //console.log(validBet);
+    //console.log(started);
     if(validBet == false || started == false) {
         return;
     }
-    console.log('in');
+    //console.log('in');
     // TODO: Implement the logic for standing (ending the player's turn)
     let xhr_stand = new XMLHttpRequest(); //Defines xmlhttp objject
     xhr_stand.open("GET", `http://localhost:3000/stand/${user}`); // request to the website
@@ -146,7 +148,7 @@ function stand() {
         }
         let user_cards = standbody.player_cards;
         let userElements = document.getElementsByClassName("cardB");
-        for(let i = 0; i < user_cards.length; i++) {
+        for(let i = 0; i < user_cards.length && i < 5; i++) {
             userElements[i].src = user_cards[i].image;
         }
         bal = standbody.balance;
@@ -158,5 +160,5 @@ function stand() {
             location.replace("https://msoebrot.github.io/blackjack-ext3me/endscreen.html");
         }
     }
-    console.log("Stand button clicked");
+    //console.log("Stand button clicked");
 }
