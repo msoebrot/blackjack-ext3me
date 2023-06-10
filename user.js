@@ -12,7 +12,7 @@ function checkUser() {
     xhr_balance.onload = function (){
         let balancebody = JSON.parse(xhr_balance.responseText);
         if(balancebody.validUser == false) {
-            alert('invalid')
+            alert('Wrong username or password!');
         }
         else {
             location.replace("https://msoebrot.github.io/blackjack-ext3me/gamescreen.html");

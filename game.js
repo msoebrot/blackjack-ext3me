@@ -118,7 +118,6 @@ function hit() {
         }
 
         if(bal <= 0) {
-            alert('Out of money!');
             location.replace("https://msoebrot.github.io/blackjack-ext3me/endscreen.html");
         }
         //console.log(hitbody);
@@ -156,7 +155,6 @@ function stand() {
         //console.log(standbody.win)
         //console.log(standbody);
         if(bal <= 0) {
-            alert('Out of money!');
             location.replace("https://msoebrot.github.io/blackjack-ext3me/endscreen.html");
         }
     }
